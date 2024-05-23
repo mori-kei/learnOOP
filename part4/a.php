@@ -75,14 +75,13 @@ class RentalBookshelf extends Bookshelf{
     // rentBook(book) 指定の本を借りる
     public function rentBook($book){
         if (!$this->findBookByTitle($book->getTitle())) {
-            echo "この本は本棚にありません。\n";
-            return;
+            return false;
         }
         if($this->isRented($book)){
-            echo "既に貸し出されています。\n";
+            return false;
         }else{
             $this->rentedBooks[] = $book;
-            echo $book->getTitle() . "を借りことができました". "\n";
+            return true;
         }
     }
     // returnBook(book) 指定の本を返す
@@ -90,21 +89,23 @@ class RentalBookshelf extends Bookshelf{
         $index = array_search($book, $this->rentedBooks);
         if ($index !== false) {
             unset($this->rentedBooks[$index]);
-            echo "返却しました。\n";
+            return true;
         } else {
-            echo "この書棚から借りられた本ではないです。\n";
+            return false;
         }
     }
+
     // listRentedBooks() 貸し出されている本の一覧を取得する
     public function listRentedBooks() {
         // 貸し出されている本の一覧を表示する処理
         if (empty($this->rentedBooks)) {
-            echo "貸し出し中の本はないです\n";
+            return false;
         } else {
-            echo "貸し出し中の本:\n";
+            $rentedBooks = [];
             foreach ($this->rentedBooks as $book) {
-                echo $book->getTitle() . "\n";
+                $rentedBooks[] = $book;
             }
+            return $rentedBooks;
         }
     }
 }
@@ -117,13 +118,63 @@ $bookshelf = new RentalBookshelf();
 $bookshelf->addBook($book1);
 $bookshelf->addBook($book2);
 
+
 //動作確認
-$bookshelf->listRentedBooks(); // 「貸出中の本はないです」と出力される
-$bookshelf->rentBook($book1); // 「坊ちゃんを借りることができました」と出力される
-$bookshelf->rentBook($book1); // 「既に貸し出されています。」と出力される
-$bookshelf->returnBook($book1); // 「返却しました。」と出力される
-$bookshelf->returnBook($book1); // 「この書棚から借りられた本ではないです」と出力される
-$bookshelf->rentBook($book1); // 「坊ちゃんを借りることができました」と出力される
-$bookshelf->rentBook($book2); // 「我輩は猫であるを借りることができました」と出力される
-$bookshelf->rentBook($book3); // 「この本は本棚にありません。」と出力される
-$bookshelf->listRentedBooks(); //貸し出し中の本: 坊ちゃん 我輩は猫である 
+$rentedBooks = $bookshelf->listRentedBooks();
+if ($rentedBooks) {
+    echo "貸し出し中の本: " . implode(", ", $rentedBooks) . "\n";
+} else {
+    echo "貸し出し中の本はないです。\n";
+}// 「貸出中の本はないです」と出力される
+
+if ($bookshelf->rentBook($book1)) {
+    echo "坊ちゃんを借りることができました。\n";
+} else {
+    echo "坊ちゃんはすでに貸し出されています。\n";
+}//「坊ちゃんを借りることができました」と出力される
+
+if ($bookshelf->rentBook($book1)) {
+    echo "坊ちゃんを借りることができました。\n";
+} else {
+    echo "坊ちゃんはすでに貸し出されています。\n";
+}//「坊ちゃんはすでに貸し出されています。」と出力される
+
+if ($bookshelf->returnBook($book1)) {
+    echo "坊ちゃんを返却しました。\n";
+} else {
+    echo "坊ちゃんは貸し出されていません。\n";
+}// 「坊ちゃんを返却しました。」と出力される
+
+if ($bookshelf->returnBook($book1)) {
+    echo "坊ちゃんを返却しました。\n";
+} else {
+    echo "坊ちゃんは貸し出されていません。\n";
+}// 「坊ちゃんは貸し出されていません。」と出力される
+
+if ($bookshelf->rentBook($book1)) {
+    echo "坊ちゃんを借りることができました。\n";
+} else {
+    echo "坊ちゃんはすでに貸し出されています。\n";
+}//「坊ちゃんを借りることができました。」と出力される
+
+if ($bookshelf->rentBook($book2)) {
+    echo "我輩は猫であるを借りることができました。\n";
+} else {
+    echo "我輩は猫であるはすでに貸し出されています。\n";
+}//「我輩は猫であるを借りることができました。」と出力される
+
+if ($bookshelf->rentBook($book3)) {
+    echo "こころを借りることができました\n";
+} else {
+    echo "この本は本棚にありません。\n";
+}//「この本は本棚にありません。」と出力される
+
+$rentedBooks = $bookshelf->listRentedBooks();
+if ($rentedBooks) {
+    echo "貸し出し中の本:\n";
+    foreach ($rentedBooks as $book) {
+        echo $book->getTitle() . "\n";
+    }
+} else {
+    echo "貸し出し中の本はありません。\n";
+}//「貸し出し中の本:坊ちゃん　我輩は猫である」と出力される
