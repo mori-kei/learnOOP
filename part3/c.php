@@ -85,8 +85,8 @@ $book = new Book("坊ちゃん",520);
 $book2 = new Book("こころ",19);
 //動作確認用
 $bookshelf = new LimitedBookShelf;
-$bookshelf->addBook($book); //拒否される
-$bookshelf->addBook($book2); //拒否されない
+echo (int)$bookshelf->addBook($book). "\n"; // 0 が出力される(拒否される)
+echo (int)$bookshelf->addBook($book2). "\n"; // 1 が出力される(拒否されない)
 echo "Rejected Count: " . $bookshelf->getRejectedCount(). "\n";//１が出力される
-$bookshelf->addBook($book);//拒否される
+echo (int)$bookshelf->addBook($book). "\n"; // 0 が出力される(拒否される)
 echo "Rejected Count: " . $bookshelf->getRejectedCount(). "\n";//2が出力される

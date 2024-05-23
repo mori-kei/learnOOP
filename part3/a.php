@@ -76,8 +76,8 @@ $book = new Book("坊ちゃん",520);
 $book2 = new Book("こころ",876);
 
 $bookshelf = new RejectedBocchanBookshelf;
-$bookshelf->addBook($book);
-$bookshelf->addBook($book2);
+echo (int)$bookshelf->addBook($book). "\n"; // 0 が出力される
+echo (int)$bookshelf->addBook($book2). "\n"; // 1 が出力される
 
 //動作確認用
 $foundBook = $bookshelf->findBookByTitle("坊ちゃん");
