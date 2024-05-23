@@ -90,6 +90,3 @@ $bookshelf->addBook($book2); //拒否されない
 echo "Rejected Count: " . $bookshelf->getRejectedCount(). "\n";//１が出力される
 $bookshelf->addBook($book);//拒否される
 echo "Rejected Count: " . $bookshelf->getRejectedCount(). "\n";//2が出力される
-
-
-
