@@ -95,7 +95,6 @@ class RentalBookshelf extends Bookshelf{
             echo "この書棚から借りられた本ではないです。\n";
         }
     }
-
     // listRentedBooks() 貸し出されている本の一覧を取得する
     public function listRentedBooks() {
         // 貸し出されている本の一覧を表示する処理
