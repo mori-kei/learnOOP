@@ -74,6 +74,10 @@ class RentalBookshelf extends Bookshelf{
     }
     // rentBook(book) 指定の本を借りる
     public function rentBook($book){
+        if (!$this->findBookByTitle($book->getTitle())) {
+            echo "この本は本棚にありません。\n";
+            return;
+        }
         if($this->isRented($book)){
             echo "既に貸し出されています。\n";
         }else{
@@ -113,7 +117,6 @@ $book3 = new Book("こころ", 876);
 $bookshelf = new RentalBookshelf();
 $bookshelf->addBook($book1);
 $bookshelf->addBook($book2);
-$bookshelf->addBook($book3);
 
 //動作確認
 $bookshelf->listRentedBooks(); // 「貸出中の本はないです」と出力される
@@ -123,5 +126,5 @@ $bookshelf->returnBook($book1); // 「返却しました。」と出力される
 $bookshelf->returnBook($book1); // 「この書棚から借りられた本ではないです」と出力される
 $bookshelf->rentBook($book1); // 「坊ちゃんを借りることができました」と出力される
 $bookshelf->rentBook($book2); // 「我輩は猫であるを借りることができました」と出力される
-$bookshelf->rentBook($book3); // 「こころを借りることができました」と出力される
-$bookshelf->listRentedBooks(); //貸し出し中の本: 坊ちゃん 我輩は猫である こころ
+$bookshelf->rentBook($book3); // 「この本は本棚にありません。」と出力される
+$bookshelf->listRentedBooks(); //貸し出し中の本: 坊ちゃん 我輩は猫である 
