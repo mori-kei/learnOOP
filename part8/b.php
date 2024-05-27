@@ -47,10 +47,12 @@ class VendingMachine {
         return $item;
     }
     
-    public function canBuy($productName){
-        return in_array($productName, array_map(function($item) {
-            return $item->getProductName();
-        }, $this->items));
+    public function canBuy($productName) {
+        //[学習用]第一引数:配列,第二引数:各要素へのコールバック useで外部スコープの変数を使用
+        $filteredItems = array_filter($this->items, function($item) use ($productName) {
+            return $item->getProductName() === $productName;
+        });
+        return !empty($filteredItems);
     }
 
     public function findItemByProductName($productName){
