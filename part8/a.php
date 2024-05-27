@@ -102,8 +102,6 @@ class DebugBookshelf extends Bookshelf {
     }
 }
 
-putenv("DEBUG=true");
-
 function createBookShelf(){
     if(getenv('DEBUG') == 'true'){
       return new DebugBookshelf;
