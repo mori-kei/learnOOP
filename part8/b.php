@@ -12,7 +12,6 @@ class Item{
         if (empty($productName)) {
             throw new InvalidArgumentException("商品名は空にできません。");
         }
-        
         $this->price = $price;
         $this->productName = $productName;
     }
