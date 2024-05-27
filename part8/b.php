@@ -31,7 +31,7 @@ class Item{
 class VendingMachine {
     private $items = [];
 
-    public function addItem(Item $item,int $count){
+    public function addItem(Item $item,$count){
         for($i =0; $i < $count;$i++){
             array_push($this->items,$item);
         }
@@ -48,14 +48,10 @@ class VendingMachine {
         return $item;
     }
     
-    public function canBuy($productName): bool{
-        //あとでPHPの配列関数に書き直す
-        foreach ($this->items as $item) {
-            if ($item->getProductName() === $productName) {
-                return true;
-            }
-        }
-        return false;
+    public function canBuy($productName){
+        return in_array($productName, array_map(function($item) {
+            return $item->getProductName();
+        }, $this->items));
     }
 
     public function findItemByProductName($productName){
@@ -84,8 +80,10 @@ $vendingMachine->addItem($item2,1);
 $vendingMachine->addItem($item3,1);
 echo var_dump($vendingMachine->getItems()); //コカコーラが3件、綾鷹,ウーロン茶が１件ずつ返ってくる
 
-//商品を購入
+// 商品を購入
 $vendingMachine->buy("コカコーラ",120); //(正常系)
 $vendingMachine->buy("綾鷹",110); //(正常系)
+echo "購入後" ;
+echo var_dump($vendingMachine->getItems()); ////コカコーラが2件、ウーロン茶が１件返ってくる
 $vendingMachine->buy("コカコーラ",119); //(異常系)　cashがItemの価格を下回る場合
 $vendingMachine->buy("綾鷹",110); //(異常系)　在庫が0件
