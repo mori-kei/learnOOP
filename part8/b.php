@@ -40,7 +40,6 @@ class VendingMachine {
         if (!$this->canBuy($productName)) {
             throw new InvalidArgumentException("在庫がありません");
         }
-        //cashがpriceより高いことを確認
         $item = $this->findItemByProductName($productName);
         if ($item->getPrice() > $cash) {
             throw new InvalidArgumentException("金額が不足しています");
@@ -48,6 +47,7 @@ class VendingMachine {
         unset($this->items[array_search($item, $this->items)]);
         return $item;
     }
+    
     public function canBuy($productName): bool{
         //あとでPHPの配列関数に書き直す
         foreach ($this->items as $item) {
